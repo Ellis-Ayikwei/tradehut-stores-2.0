@@ -46,12 +46,12 @@ export default function Home() {
 
             <div id="products-section" className="max-w-screen-xl mx-auto px-4 py-8">
                 {/* Featured Collections Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
                     {collections.map((collection) => (
                         <div key={collection.id} className="relative h-48 rounded-lg overflow-hidden group cursor-pointer">
                             <img src={collection.image} alt={collection.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                             <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                <h3 className="text-white text-2xl font-bold">{collection.title}</h3>
+                                <h3 className="text-white text-xl md:text-2xl font-bold">{collection.title}</h3>
                             </div>
                         </div>
                     ))}
@@ -65,9 +65,7 @@ export default function Home() {
                 {/* Products Section */}
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                     {/* Filter Sidebar */}
-                    <div className="lg:col-span-1">
-                        <FilterSidebar />
-                    </div>
+                  
 
                     {/* Main Content */}
                     <div className="lg:col-span-3">
@@ -82,7 +80,7 @@ export default function Home() {
                                 />
                             </aside>
 
-                            <main className="flex-1">
+                            <main className="flex-2">
                                 <ProductList products={sampleProducts} selectedCategories={selectedCategories} selectedBrands={selectedBrands} priceRange={priceRange} />
                             </main>
                         </div>

@@ -36,7 +36,7 @@ export default function Hero() {
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-4 px-4 py-12 sm:px-6 lg:px-8">
                 <div className="relative">
                     {/* Hero Content */}
                     <div className="text-center max-w-3xl mx-auto">
@@ -85,7 +85,7 @@ export default function Hero() {
 
                     {/* Features Section */}
                     <motion.div
-                        className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto"
+                        className="grid grid-cols-3 gap-6 max-w-4xl mx-auto"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.5 }}
@@ -99,8 +99,8 @@ export default function Hero() {
                                 <span className="inline-flex items-center justify-center p-3 bg-primary-500/10 rounded-lg mb-4">
                                     <FontAwesomeIcon icon={feature.icon} className="h-6 w-6 text-primary-500" />
                                 </span>
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
-                                <p className="text-gray-500 dark:text-gray-400 text-sm">{feature.description}</p>
+                                <h3 className="text-sm md:text-lg font-semibold text-gray-900 dark:text-white mb-2">{feature.title}</h3>
+                                <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">{feature.description}</p>
                             </motion.div>
                         ))}
                     </motion.div>

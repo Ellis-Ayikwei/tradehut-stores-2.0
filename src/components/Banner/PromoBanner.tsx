@@ -45,7 +45,7 @@ export default function PromoBanner() {
         <div className="relative h-[300px] md:h-[400px] overflow-hidden rounded-2xl">
             {banners.map((banner, index) => (
                 <div key={banner.id} className={`absolute inset-0 transition-opacity duration-500 ${index === currentBanner ? 'opacity-100' : 'opacity-0'}`}>
-                    <div className={`absolute inset-0 bg-gradient-to-r ${banner.color} opacity-90`} />
+                    <div className={`absolute inset-0 bg-gradient-to-r ${banner.color} opacity-60`} />
                     <img src={banner.image} alt={banner.title} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 flex items-center">
                         <div className="max-w-screen-xl mx-auto px-4 w-full">
