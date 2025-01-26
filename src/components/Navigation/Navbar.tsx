@@ -13,7 +13,7 @@ export default function Navbar() {
     const { theme, toggleTheme } = useTheme();
 
     return (
-        <nav className="bg-white dark:bg-gray-800 shadow-md transition-colors">
+        <nav className="bg-white dark:bg-gray-800 shadow-md transition-colors fixed">
             <div className="max-w-screen-xl mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
