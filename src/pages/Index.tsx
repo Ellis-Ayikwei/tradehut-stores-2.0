@@ -80,7 +80,7 @@ export default function Home() {
                                 />
                             </aside>
 
-                            <main className="flex-1">
+                            <main className="flex-2">
                                 <ProductList products={sampleProducts} selectedCategories={selectedCategories} selectedBrands={selectedBrands} priceRange={priceRange} />
                             </main>
                         </div>
