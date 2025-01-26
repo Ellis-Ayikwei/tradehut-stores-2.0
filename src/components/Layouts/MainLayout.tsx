@@ -21,7 +21,7 @@ export default function MainLayout() {
 
     const menuItems: MenuItem[] = [
         { icon: faHome, label: 'Home', path: '/' },
-        { icon: faHome, label: 'Sell', path: '/sell'}
+        { icon: faHome, label: 'Sell', path: '/sell'},
         { icon: faUser, label: 'Profile', path: '/profile' },
         { icon: faHeart, label: 'Wishlist', path: '/wishlist' },
         { icon: faShoppingCart, label: 'Cart', path: '/cart' },
