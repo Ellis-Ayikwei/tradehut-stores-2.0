@@ -1,9 +1,10 @@
 'use client';
 
 import { faMoon, faSun } from '@fortawesome/free-regular-svg-icons';
-import { faHeart, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from '@headlessui/react';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -11,9 +12,10 @@ import { useTheme } from '../../context/ThemeContext';
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { theme, toggleTheme } = useTheme();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     return (
-        <nav className="bg-white dark:bg-gray-800 shadow-md transition-colors">
+        <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white dark:bg-gray-800 shadow-md transition-colors">
             <div className="max-w-screen-xl mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
@@ -36,6 +38,9 @@ export default function Navbar() {
 
                     {/* Right Icons */}
                     <div className="flex items-center space-x-4">
+                        <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-white hover:text-gray-300 transition-colors">
+                            <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
+                        </button>
                         <button onClick={toggleTheme} className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a]">
                             <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} className="h-5 w-5" />
                         </button>
@@ -82,8 +87,22 @@ export default function Navbar() {
                             </Menu.Items>
                         </Menu>
                     </div>
+
+                    {/* Search Bar */}
                 </div>
             </div>
+            <motion.div initial={false} animate={{ height: isSearchOpen ? 'auto' : 0, opacity: isSearchOpen ? 1 : 0 }} className="overflow-hidden">
+                <div className="py-4 w-[70%] px-20 mx-auto justify-center items-center text-center">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Search for products..."
+                            className="w-full bg-white/10 border border-white/20 rounded-full px-6 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-white"
+                        />
+                        <FontAwesomeIcon icon={faSearch} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    </div>
+                </div>
+            </motion.div>
         </nav>
     );
 }
