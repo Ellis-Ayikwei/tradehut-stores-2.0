@@ -1,3 +1,26 @@
+export const conditions = [
+    {
+        id: 'new',
+        name: 'New',
+    },
+    {
+        id: 'used-like-new',
+        name: 'Used - Like New',
+    },
+    {
+        id: 'used-good',
+        name: 'Used - Good',
+    },
+    {
+        id: 'used-fair',
+        name: 'Used - Fair',
+    },
+    {
+        id: 'refurbished',
+        name: 'Refurbished',
+    },
+];
+
 export const products = [
     {
         id: '1',
@@ -8,8 +31,9 @@ export const products = [
         brand: 'Apple',
         rating: 4.9,
         reviews: 245,
-        isNew: true,
+        condition: 'new',
         description: 'The most powerful iPhone ever with A17 Pro chip',
+        stock: 8,
     },
     {
         id: '2',
@@ -20,8 +44,9 @@ export const products = [
         brand: 'Apple',
         rating: 4.8,
         reviews: 189,
-        isNew: true,
+        condition: 'new',
         description: 'Supercharged for pros with M2 Max',
+        stock: 4,
     },
     {
         id: '3',
@@ -32,8 +57,9 @@ export const products = [
         brand: 'Sony',
         rating: 4.7,
         reviews: 312,
-        isNew: true,
+        condition: 'new',
         description: 'Industry-leading noise cancellation',
+        stock: 12,
     },
     {
         id: '4',
@@ -44,8 +70,9 @@ export const products = [
         brand: 'Samsung',
         rating: 4.8,
         reviews: 276,
-        isNew: true,
+        condition: 'new',
         description: '200MP camera system with S Pen',
+        stock: 8,
     },
     {
         id: '5',
@@ -54,10 +81,11 @@ export const products = [
         image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0',
         category: 'Tablets',
         brand: 'Apple',
-        rating: 4.9,
+        rating: 2.9,
         reviews: 156,
-        isNew: false,
+        condition: 'used-like-new',
         description: 'Liquid Retina XDR display with M2 chip',
+        stock: 4,
     },
     {
         id: '6',
@@ -68,8 +96,9 @@ export const products = [
         brand: 'Dell',
         rating: 4.6,
         reviews: 198,
-        isNew: false,
+        condition: 'used-good',
         description: 'InfinityEdge display with RTX 4060',
+        stock: 6,
     },
     {
         id: '7',
@@ -80,8 +109,9 @@ export const products = [
         brand: 'Apple',
         rating: 4.8,
         reviews: 423,
-        isNew: true,
+        condition: 'new',
         description: 'Active Noise Cancellation with Adaptive Audio',
+        stock: 12,
     },
     {
         id: '8',
@@ -92,8 +122,9 @@ export const products = [
         brand: 'ASUS',
         rating: 4.7,
         reviews: 167,
-        isNew: false,
+        condition: 'used-fair',
         description: 'AMD Ryzen 9 with RTX 4070',
+        stock: 6,
     },
     {
         id: '9',
@@ -104,8 +135,9 @@ export const products = [
         brand: 'Google',
         rating: 4.7,
         reviews: 143,
-        isNew: true,
+        condition: 'new',
         description: 'Advanced AI photography with Tensor G3',
+        stock: 8,
     },
     {
         id: '10',
@@ -116,8 +148,9 @@ export const products = [
         brand: 'Samsung',
         rating: 4.6,
         reviews: 89,
-        isNew: true,
+        condition: 'refurbished',
         description: 'Advanced health tracking with BioActive Sensor',
+        stock: 12,
     },
     {
         id: '11',
@@ -128,8 +161,9 @@ export const products = [
         brand: 'Sony',
         rating: 4.9,
         reviews: 487,
-        isNew: true,
+        condition: 'new',
         description: 'Next-gen gaming with ray tracing and SSD',
+        stock: 8,
     },
     {
         id: '12',
@@ -140,8 +174,9 @@ export const products = [
         brand: 'Microsoft',
         rating: 4.7,
         reviews: 156,
-        isNew: true,
+        condition: 'used-like-new',
         description: 'Perfect for productivity and style',
+        stock: 6,
     },
     {
         id: '13',
@@ -152,8 +187,9 @@ export const products = [
         brand: 'Bose',
         rating: 4.8,
         reviews: 342,
-        isNew: false,
+        condition: 'used-good',
         description: 'Premium noise cancelling headphones',
+        stock: 12,
     },
     {
         id: '14',
@@ -164,8 +200,9 @@ export const products = [
         brand: 'Samsung',
         rating: 4.7,
         reviews: 189,
-        isNew: true,
+        condition: 'new',
         description: 'Large screen tablet with S Pen support',
+        stock: 8,
     },
     {
         id: '15',
@@ -176,8 +213,9 @@ export const products = [
         brand: 'DJI',
         rating: 4.6,
         reviews: 123,
-        isNew: true,
+        condition: 'used-fair',
         description: 'Compact drone with 4K camera',
+        stock: 6,
     },
 ];
 

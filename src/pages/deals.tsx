@@ -108,7 +108,7 @@ export default function Deals() {
                 <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-transparent to-transparent" />
 
                 <div className="grid md:grid-cols-2 gap-12 items-center relative">
-                    <div className="space-y-8">
+                    <div className="space-y-4">
                         <div className="flex flex-wrap items-center gap-4">
                             <span className="inline-flex items-center bg-white/95 text-primary-500 px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
                                 <span className="animate-pulse mr-2">🔥</span>
@@ -119,15 +119,15 @@ export default function Deals() {
                             </span>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             <h2 className="text-5xl font-bold text-white leading-tight">{deals[0].name}</h2>
                             <p className="text-white/90 text-xl leading-relaxed">{deals[0].description}</p>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="space-y2">
                             <div className="flex items-baseline gap-4">
-                                <span className="text-6xl font-bold text-white tracking-tight">${deals[0].price}</span>
-                                <span className="text-3xl text-white/60 line-through">${deals[0].originalPrice}</span>
+                                <span className="text-4xl font-bold text-white tracking-tight">${deals[0].price}</span>
+                                <span className="text-2xl text-white/60 line-through">${deals[0].originalPrice}</span>
                             </div>
 
                             <div className="flex items-center gap-3">
@@ -140,14 +140,14 @@ export default function Deals() {
                             </div>
                         </div>
 
-                        <div className="flex flex-wrap gap-4">
-                            <button className="group bg-white text-primary-500 px-8 py-4 rounded-xl font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <div className="flex flex-row  gap-4">
+                            <button className="group bg-white text-primary-500 px-4 py-4 rounded-full font-semibold hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl">
                                 <span className="flex items-center gap-2">
                                     Buy Now
                                     <span className="group-hover:translate-x-1 transition-transform">→</span>
                                 </span>
                             </button>
-                            <button className="group border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300">
+                            <button className="group border-2 hidden md:block border-white text-white px-4 py-4 rounded-full font-semibold hover:bg-white/10 transition-all duration-300">
                                 <span className="flex items-center gap-2">
                                     Learn More
                                     <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
@@ -156,7 +156,7 @@ export default function Deals() {
                         </div>
                     </div>
 
-                    <div className="relative h-[600px] rounded-2xl overflow-hidden group">
+                    <div className="relative h-[300px] rounded-2xl overflow-hidden group">
                         {/* Glass effect overlay */}
                         <div
                             className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm rounded-2xl 

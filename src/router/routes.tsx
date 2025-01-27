@@ -11,6 +11,7 @@ import Deals from '../pages/deals';
 import Faq from '../pages/faq';
 import Home from '../pages/Index';
 import ProductDetail from '../pages/products/[id]';
+import AllProducts from '../pages/products/all-products';
 import UserDashboard from '../pages/profile/settings';
 import Returns from '../pages/returns';
 import SellerDashboard from '../pages/sell';
@@ -52,6 +53,7 @@ export const router = createBrowserRouter([
             { path: 'faq', element: <Faq /> },
             { path: 'shipping-info', element: <ShippingInfo /> },
             { path: '/return-policy', element: <Returns /> },
+            { path: '/products', element: <AllProducts /> },
         ],
     },
     {

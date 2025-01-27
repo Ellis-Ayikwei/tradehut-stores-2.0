@@ -32,12 +32,12 @@ export default function Hero() {
     };
 
     return (
-        <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <div className=" relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none" />
 
-            <div className="max-w-7xl mx-4 px-4 py-12 sm:px-6 lg:px-8">
-                <div className="relative">
+            <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+                <div className="relative mx-auto">
                     {/* Hero Content */}
                     <div className="text-center max-w-3xl mx-auto">
                         <motion.div className="flex justify-center gap-4 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
@@ -84,12 +84,7 @@ export default function Hero() {
                     </div>
 
                     {/* Features Section */}
-                    <motion.div
-                        className="grid grid-cols-3 gap-6 max-w-4xl mx-auto"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
-                    >
+                    {/* <motion.div className="grid grid-cols-3 gap-6 max-w-4xl mx-auto" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }}>
                         {features.map((feature) => (
                             <motion.div
                                 key={feature.title}
@@ -103,7 +98,7 @@ export default function Hero() {
                                 <p className="text-gray-500 dark:text-gray-400 text-xs md:text-sm">{feature.description}</p>
                             </motion.div>
                         ))}
-                    </motion.div>
+                    </motion.div> */}
                 </div>
             </div>
         </div>

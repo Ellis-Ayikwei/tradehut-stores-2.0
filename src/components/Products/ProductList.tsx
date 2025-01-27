@@ -10,6 +10,9 @@ interface Product {
     image: string;
     category: string;
     brand: string;
+    rating?: number;
+    stock: number;
+    condition: string;
 }
 
 interface ProductListProps {
@@ -45,13 +48,16 @@ export default function ProductList({ products, selectedCategories, selectedBran
 
     return (
         <div>
-            <div className="mb-6 flex justify-between items-center">
-                <h2 className="text-xl font-semibold">Products ({filteredProducts.length})</h2>
-                <select value={sortBy} onChange={(e) => setSortBy(e.target.value as typeof sortBy)} className="border rounded-md px-3 py-1">
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="name">Name</option>
-                </select>
+            <div className="mb-6 flex justify-between items-center border-b border-gray-200 pb-6">
+                <h2 className="text-2xl font-semibold">Products ({filteredProducts.length})</h2>
+                <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium">Sort by:</span>
+                    <select value={sortBy} onChange={(e) => setSortBy(e.target.value as typeof sortBy)} className="border rounded-md px-3 py-1 text-sm hover:bg-gray-100">
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
