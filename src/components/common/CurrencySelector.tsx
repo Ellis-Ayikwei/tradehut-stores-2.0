@@ -12,14 +12,19 @@ const CurrencySelector = () => {
         setSelectedCurrency(currency);
         setIsOpen(false);
     };
-
+    const getFlagUrl = ({ countryCode, size = '64x48' }: { countryCode: string; size?: string }) => {
+        return `https://flagcdn.com/16x12/${countryCode.toLowerCase()}.png`;
+    };
     return (
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="flex items-center gap-2 text-black hover:text-primary transition-colors py-2 px-3 border border-gray-100 rounded-lg hover:bg-white/10"
             >
-                <span className="text-lg">{selectedCurrency.flag}</span>
+                <span className="text-lg">
+                    {' '}
+                    <img src={getFlagUrl({ countryCode: selectedCurrency?.countryCode })} alt={`${selectedCurrency.flag} flag`} width="16" height="12" />
+                </span>
                 <span className="text-sm font-medium">{selectedCurrency.code}</span>
                 <FontAwesomeIcon icon={faChevronDown} className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -51,7 +56,10 @@ const CurrencySelector = () => {
                                             transition={{ type: 'spring', stiffness: 300 }}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <span className="text-lg">{currency.flag}</span>
+                                                <span className="text-lg">
+                                                    {' '}
+                                                    <img src={getFlagUrl({ countryCode: currency?.countryCode })} alt={`${currency.flag} flag`} width="16" height="12" />
+                                                </span>
                                                 <div className="text-left">
                                                     <div className="font-medium text-gray-900">{currency.code}</div>
                                                     <div className="text-sm text-gray-500">{currency.name}</div>

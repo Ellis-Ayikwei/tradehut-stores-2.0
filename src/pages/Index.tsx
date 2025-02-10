@@ -2,10 +2,7 @@
 
 import { useState } from 'react';
 import PromoBanner from '../components/Banner/PromoBanner';
-import FilterSidebar from '../components/Filters/FilterSidebar';
 import Hero from '../components/Layouts/Hero';
-import Sidebar from '../components/Navigation/Sidebar';
-import ProductList from '../components/Products/ProductList';
 import ScrollToTop from '../components/ScrollToTop';
 import { products } from '../data/products';
 
@@ -63,29 +60,6 @@ export default function Home() {
                 </div>
 
                 {/* Products Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    {/* Filter Sidebar */}
-                  
-
-                    {/* Main Content */}
-                    <div className="lg:col-span-3">
-                        <div className="flex gap-8">
-                            <aside className="hidden md:block w-64 sticky top-4 h-fit">
-                                <Sidebar
-                                    categories={['Phones', 'Laptops', 'Accessories', 'Tablets', 'Smartwatches']}
-                                    brands={['Apple', 'Samsung', 'Dell', 'HP', 'Lenovo']}
-                                    onCategoryChange={setSelectedCategories}
-                                    onBrandChange={setSelectedBrands}
-                                    onPriceChange={setPriceRange}
-                                />
-                            </aside>
-
-                            <main className="flex-2">
-                                <ProductList products={sampleProducts} selectedCategories={selectedCategories} selectedBrands={selectedBrands} priceRange={priceRange} />
-                            </main>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <ScrollToTop />

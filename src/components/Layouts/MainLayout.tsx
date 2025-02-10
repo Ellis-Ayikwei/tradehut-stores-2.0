@@ -1,6 +1,6 @@
 'use client';
 
-import { faBars, faFilter, faHeart, faHome, faShoppingCart, faTag, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBox, faFilter, faHeart, faHome, faShoppingCart, faTag, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -21,7 +21,8 @@ export default function MainLayout() {
 
     const menuItems: MenuItem[] = [
         { icon: faHome, label: 'Home', path: '/' },
-        { icon: faHome, label: 'Sell', path: '/sell'},
+        { icon: faBox, label: 'Products', path: '/products' },
+        { icon: faHome, label: 'Sell', path: '/sell' },
         { icon: faUser, label: 'Profile', path: '/profile' },
         { icon: faHeart, label: 'Wishlist', path: '/wishlist' },
         { icon: faShoppingCart, label: 'Cart', path: '/cart' },
@@ -67,7 +68,7 @@ export default function MainLayout() {
                     isMenuOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}
             >
-                <div className="flex flex-col h-full">
+                <div className="flex flex-col h-full z-100">
                     <div className="p-6">
                         <div className="flex justify-between items-center mb-8">
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Menu</h2>
@@ -139,7 +140,7 @@ export default function MainLayout() {
             {/* Main Content */}
             <div className="flex-1">
                 <Navbar />
-                <main className="flex-grow container mx-auto px-4 py-8">
+                <main className="flex-grow mx-auto px-4 py-8">
                     <Outlet />
                 </main>
                 <Footer />
