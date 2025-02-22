@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '../helper/axiosInstance';
+import { ProductDetail } from '../types';
 
 const initialProductDetailState: ProductDetail = {
     id: '',
@@ -11,6 +12,7 @@ const initialProductDetailState: ProductDetail = {
     description: '',
     slug: '',
     price: '',
+    final_price: 0,
     main_product_image: '',
     min_amount: 0,
     thin: '',
@@ -23,7 +25,6 @@ const initialProductDetailState: ProductDetail = {
     meta_description: '',
     average_rating: '',
     total_reviews: 0,
-    discount_price: '',
     discount_percentage: 0,
     category: '',
     sub_category: '',
@@ -36,6 +37,8 @@ const initialProductDetailState: ProductDetail = {
     rating: 0,
     reviews: [],
     key_features: [],
+    variation_theme: '',
+    default_variant: '',
 };
 
 // Define the initial state type
@@ -44,7 +47,7 @@ interface ProductState {
     productDetail: ProductDetail;
     featuredProducts: object[];
     popularProducts: object[];
-    loading: boolean;
+    isUpdating: boolean;
     error: string | null;
 }
 
@@ -54,7 +57,7 @@ const initialState: ProductState = {
     featuredProducts: [],
     popularProducts: [],
     productDetail: initialProductDetailState,
-    loading: false,
+    isUpdating: false,
     error: null,
 };
 
@@ -98,25 +101,25 @@ const productSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(fetchProducts.pending, (state) => {
-                state.loading = true;
+                state.isUpdating = true;
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.allProducts = action.payload;
-                state.loading = false;
+                state.isUpdating = false;
             })
             .addCase(fetchProducts.rejected, (state, action) => {
-                state.loading = false;
+                state.isUpdating = false;
                 state.error = action.error.message || 'An error occurred';
             })
             .addCase(fetchAProduct.pending, (state) => {
-                state.loading = true;
+                state.isUpdating = true;
             })
             .addCase(fetchAProduct.fulfilled, (state, action) => {
                 state.productDetail = action.payload;
-                state.loading = true;
+                state.isUpdating = true;
             })
             .addCase(fetchAProduct.rejected, (state, action) => {
-                state.loading = true;
+                state.isUpdating = true;
             })
             .addCase(fetchFeaturedProducts.fulfilled, (state, action) => {
                 state.featuredProducts = action.payload;

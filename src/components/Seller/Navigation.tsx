@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { NavItem } from '@/types/seller';
 import { Menu, X } from 'lucide-react';
+import { NavItem } from '../../types';
 
 interface NavigationProps {
   activeTab: string;

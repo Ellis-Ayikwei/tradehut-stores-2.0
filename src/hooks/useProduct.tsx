@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axiosInstance from '../helper/axiosInstance';
+import { Product } from '../types';
 
 export function useProduct(productId: string) {
   const [product, setProduct] = useState<Product | null>(null);
@@ -12,7 +13,7 @@ export function useProduct(productId: string) {
     async function fetchProduct() {
       try {
         setLoading(true);
-        const response = await axios.get(`/api/products/${productId}`);
+        const response = await axiosInstance.get(`/api/products/${productId}`);
         if (mounted) {
           setProduct(response.data);
           setError(null);

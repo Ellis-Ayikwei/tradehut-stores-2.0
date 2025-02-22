@@ -7,8 +7,11 @@ import { Link, useParams } from 'react-router-dom';
 import ProductPriceDisplay from '../../components/pricing/prodDetailPricer';
 import { Button } from '../../components/ui/Button';
 import { useCurrency } from '../../context/CurrencyContext';
+import showMessage from '../../helper/showMessage';
 import { AppDispatch, IRootState } from '../../store';
+import { addToCart } from '../../store/cartSlice';
 import { fetchAProduct } from '../../store/productSlice';
+import { ProductVariant } from '../../types';
 import AddReview from './addNewReview';
 import ProductVariantSelector from './productVariant';
 
@@ -169,23 +172,24 @@ export default function ComprehensiveProductDetail() {
     const [selectedSpec, setSelectedSpec] = useState('128GB');
     const [selectedImage, setSelectedImage] = useState(0);
     const [wishlisted, setWishlisted] = useState(false);
+    const [selectedVariantConfig, setSelectedVariantConfig] = useState<{ variant: ProductVariant; attributes: Record<string, string>; isComplete: boolean } | null>(null);
 
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const cart_id = '8b032fd277d54c49a02f16bc5933f8c7';
+    const handleVariantSelect = (config: { variant: ProductVariant; attributes: Record<string, string>; isComplete: boolean }) => {
+        setSelectedVariantConfig(config);
+    };
 
-    useEffect(() => {
-        if (id) {
-            setIsLoading(true);
-            dispatch(fetchAProduct(id)).finally(() => setIsLoading(false));
-        }
-    }, [dispatch, id]);
+    console.log(selectedVariantConfig === null);
+    console.log('the selected varaiant', selectedVariantConfig);
 
-    useEffect(() => {
-        if (id) {
-            setIsLoading(true);
-            dispatch(fetchAProduct(id)).finally(() => setIsLoading(false));
-        }
-    }, [dispatch, id]);
+    // useEffect(() => {
+    //     if (id) {
+    //         setIsLoading(true);
+    //         dispatch(fetchAProduct(id)).finally(() => setIsLoading(false));
+    //     }
+    // }, [dispatch, id]);
 
     useEffect(() => {
         if (id) {
@@ -210,16 +214,44 @@ export default function ComprehensiveProductDetail() {
 
     const { product, reviews, recommendedProducts, returnPolicy, shippingInfo } = mockData;
 
-    const calculateAverageRating = () => {
-        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-        return (totalRating / reviews?.length).toFixed(1);
-    };
-
     function handleToggleWishlist() {
-        setWishlisted((prevWishlisted) => !prevWishlisted);
+        setWishlisted((prev) => !prev);
     }
+
     function handleAddToCart(event: MouseEvent<HTMLButtonElement>): void {
-        alert(`Added ${quantity} of ${product.name} (${selectedSpec}) to cart.`);
+        if (!selectedVariantConfig || !selectedVariantConfig.isComplete) {
+            // alert('Please select a valid variant configuration.');
+            showMessage('Please select a valid variant configuration', 'error');
+            return;
+        }
+        dispatch(
+            addToCart({
+                cart_id: cart_id,
+                product_id: productDetail.id,
+                quantity,
+                product_variant_id: selectedVariantConfig.variant.id,
+            })
+        )
+            .unwrap()
+            .then((response) => {
+                console.log(response.status);
+                if (response.status === 201) {
+                    showMessage('Product added to cart successfully', 'success');
+                }
+                if (response.status === 409) {
+                    showMessage('Item Already in cart', 'error');
+                }
+            })
+            .catch((err) => showMessage(err.response.detail, 'error'));
+    }
+
+    function handleBuyNow(event: MouseEvent<HTMLButtonElement>): void {
+        if (!selectedVariantConfig || !selectedVariantConfig.isComplete) {
+            alert('Please select a valid variant configuration.');
+            return;
+        }
+        // For demonstration, we simply navigate to a checkout route with query params.
+        navigate(`/checkout?productId=${productDetail.id}&variantId=${selectedVariantConfig.variant.id}&quantity=${quantity}`);
     }
 
     return (
@@ -278,7 +310,7 @@ export default function ComprehensiveProductDetail() {
                                     </button>
                                 </div>
 
-                                <ProductPriceDisplay productDetail={productDetail} />
+                                {!selectedVariantConfig?.isComplete && <ProductPriceDisplay productDetail={productDetail} />}
 
                                 <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                                     <h3 className="font-semibold mb-2">Highlights</h3>
@@ -292,7 +324,7 @@ export default function ComprehensiveProductDetail() {
                                     </ul>
                                 </div>
 
-                                <ProductVariantSelector productDetail={productDetail} />
+                                <ProductVariantSelector productDetail={productDetail} onConfigChange={(config) => handleVariantSelect(config)} />
 
                                 <div className="flex flex-col sm:flex-row gap-4">
                                     <div className="flex items-center gap-4">
@@ -410,7 +442,7 @@ export default function ComprehensiveProductDetail() {
                                 </div>
 
                                 <div className="space-y-4">
-                                    {productDetail.reviews.map((review) => (
+                                    {productDetail.reviews.map((review: any) => (
                                         <div key={review.id} className="border-b dark:border-gray-700 pb-4">
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="flex items-center gap-2">

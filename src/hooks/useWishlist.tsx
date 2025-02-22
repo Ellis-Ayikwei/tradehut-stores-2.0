@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import axiosInstance from '../helper/axiosInstance';
 
 export function useWishlist() {
   const [wishlist, setWishlist] = useState<string[]>([]);
@@ -7,7 +8,7 @@ export function useWishlist() {
   const addToWishlist = useCallback(async (productId: string) => {
     setIsUpdating(true);
     try {
-      await axios.post('/api/wishlist/add', { productId });
+      await axiosInstance.post('/api/wishlist/add', { productId });
       setWishlist(prev => [...prev, productId]);
       return true;
     } catch (error) {
@@ -21,7 +22,7 @@ export function useWishlist() {
   const removeFromWishlist = useCallback(async (productId: string) => {
     setIsUpdating(true);
     try {
-      await axios.post('/api/wishlist/remove', { productId });
+      await axiosInstance.post('/api/wishlist/remove', { productId });
       setWishlist(prev => prev.filter(id => id !== productId));
       return true;
     } catch (error) {

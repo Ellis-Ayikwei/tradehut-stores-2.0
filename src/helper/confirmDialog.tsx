@@ -1,52 +1,77 @@
-import Swal from 'sweetalert2';
+import { notification, Space } from 'antd';
+import { Button } from '../components/ui/Button';
 
-interface ConfrimdialogParams {
+export interface ConfirmNotificationParams {
     title: string;
+    message?: string;
     note?: string;
-    body?: string;
     recommended?: string;
     finalQuestion: string;
     showSuccessMessage?: boolean;
 }
-/**
- * Displays a confirmation dialog using SweetAlert2.
- *
- * @param {Object} params - The parameters for the dialog.
- * @param {string} params.title - The title of the dialog.
- * @param {string} params.note - A note to display in the dialog.
- * @param {string} params.body - The main body text of the dialog.
- * @param {string} params.recommended - Recommended action text.
- * @param {string} params.finalQuestion - The final question in the dialog.
- * @param {boolean} [params.showSuccessMessage=false] - Whether to show a success message on confirmation.
- * @returns {Promise<boolean>} - Resolves to true if confirmed, false if denied.
- */
-const ConfirmDialog = ({ title, note = '', body = '', recommended = '', finalQuestion, showSuccessMessage = false }: ConfrimdialogParams): Promise<boolean | undefined> => {
-    return Swal.fire({
-        title,
-        icon: 'warning',
-        html: `${body}<br>Note:<br>${note}<br>${recommended}<br><b>${finalQuestion}</b>`,
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-        denyButtonText: 'No',
-        customClass: {
-            actions: 'my-actions',
-            cancelButton: 'order-1 right-gap',
-            confirmButton: 'order-2',
-            denyButton: 'order-3',
-        },
-    }).then((result) => {
-        if (result.isConfirmed) {
-            if (showSuccessMessage) {
-                Swal.fire('Saved!', '', 'success');
-            }
-            return true;
-        } else if (result.isDenied) {
-            if (showSuccessMessage) {
-                Swal.fire('Changes are not saved', '', 'info');
-            }
-            return false;
-        }
+
+const ConfirmDialog = ({ title, message = '', note = '', recommended = '', finalQuestion, showSuccessMessage = false }: ConfirmNotificationParams): Promise<boolean> => {
+    return new Promise((resolve) => {
+        const key = `confirmNotification_${Date.now()}`;
+
+        const btn = (
+            <Space>
+                <Button
+                    variant="outline"
+                    onClick={() => {
+                        notification.destroy(key);
+                        if (showSuccessMessage) {
+                            notification.info({
+                                message: 'Cancelled',
+                                description: 'The changes are not saved.',
+                                placement: 'topRight',
+                            });
+                        }
+                        resolve(false);
+                    }}
+                >
+                    No
+                </Button>
+                <Button
+                    variant="primary"
+                    onClick={() => {
+                        notification.destroy(key);
+                        if (showSuccessMessage) {
+                            notification.success({
+                                message: 'Confirmed',
+                                description: 'The changes are saved.',
+                                placement: 'topRight',
+                            });
+                        }
+                        resolve(true);
+                    }}
+                >
+                    Yes
+                </Button>
+            </Space>
+        );
+
+        notification.open({
+            key,
+            message: title,
+            description: (
+                <div>
+                    {message && <div>{message}</div>}
+                    {note && (
+                        <div>
+                            <strong>Note:</strong> {note}
+                        </div>
+                    )}
+                    {recommended && <div>{recommended}</div>}
+                    <div>
+                        <strong>{finalQuestion}</strong>
+                    </div>
+                </div>
+            ),
+            btn,
+            duration: 0,
+            placement: 'top',
+        });
     });
 };
 

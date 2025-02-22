@@ -1,18 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { useMobileDetection } from '@/hooks/useMobileDetection';
-import Navigation from '@/components/seller-dashboard/Navigation/Navigation';
-import DashboardContent from '@/components/seller-dashboard/Dashboard/DashboardContent';
-import ProductsContent from '@/components/seller-dashboard/Products/ProductsContent';
-import SettingsContent from '@/components/seller-dashboard/Settings/SettingsContent';
-import { NavItem } from '@/types/seller';
+
 import { 
   BarChart3, 
   Package, 
   Settings, 
   ShoppingCart 
 } from 'lucide-react';
+import { NavItem } from '../../types';
+import { useMobileDetection } from '../../hooks/useMobileDetection';
 
 const SellerDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');

@@ -4,9 +4,10 @@ import { useCurrency } from '../../context/CurrencyContext';
 interface ProductListPriceDisplayProps {
     price: number;
     discountPercent?: number;
+    final_price?: number;
 }
 
-const ProductListPriceDisplay = React.memo(({ price, discountPercent }: ProductListPriceDisplayProps) => {
+const ProductListPriceDisplay = React.memo(({ price, discountPercent, final_price }: ProductListPriceDisplayProps) => {
     const hasDiscount = discountPercent != null && discountPercent > 0;
     const { formatPrice } = useCurrency();
     // Calculate the discounted price using the percentage.
@@ -15,7 +16,7 @@ const ProductListPriceDisplay = React.memo(({ price, discountPercent }: ProductL
     return hasDiscount ? (
         <div className="flex flex-wrap items-center space-x-4">
             {/* Display the discounted price */}
-            <span className="text-xl font-bold text-black">{formatPrice(Number(discountedPrice.toFixed(2)))}</span>
+            <span className="text-xl font-bold text-black">{formatPrice(Number((final_price ?? discountedPrice).toFixed(2)))}</span>
             {/* Display the original price struck-through */}
             <span className="text-sm text-gray-500 line-through">{formatPrice(Number(price.toFixed(2)))}</span>
             {/* Display the discount badge */}

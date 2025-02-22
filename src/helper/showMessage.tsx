@@ -1,19 +1,21 @@
-import Swal from "sweetalert2";
+import { notification } from 'antd';
 
-const showMessage = (msg = '', type = 'success') => {
-    const toast: any = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 3000,
-        customClass: { container: 'toast' },
-    });
-    toast.fire({
-        icon: type,
-        title: msg,
-        padding: '10px 20px',
+const showMessage = (msg = '', type: 'success' | 'error' | 'info' | 'warning' = 'success') => {
+    console.log('showMessage called with:', msg, type);
+    const titles = {
+        success: 'Success',
+        error: 'Error',
+        info: 'Info',
+        warning: 'Warning',
+    };
+
+    // Directly call the static API
+    notification[type]({
+        message: titles[type] || 'Notification',
+        description: msg,
+        duration: 3,
+        placement: 'topRight',
     });
 };
 
-
-export default showMessage
+export default showMessage;

@@ -2,9 +2,12 @@
 
 import { faHeart, faShoppingCart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '../../components/ui/Button';
+import { Card } from '../../components/ui/Card';
+import { AppDispatch, IRootState } from '../../store/index';
+import { getWishlist } from '../../store/wishListSlice';
 
 interface WishlistItem {
     id: string;
@@ -17,6 +20,7 @@ interface WishlistItem {
 }
 
 export default function Wishlist() {
+    const dispatch = useDispatch<AppDispatch>();
     const [wishlistItems, setWishlistItems] = useState<WishlistItem[]>([
         {
             id: '1',
@@ -29,6 +33,13 @@ export default function Wishlist() {
         },
         // Add more items...
     ]);
+
+    
+    const { wishlist, isUpdating } = useSelector((state: IRootState) => state.wishlist);
+    
+    useEffect(() => {
+        dispatch(getWishlist());
+    }, [dispatch]);
 
     const removeFromWishlist = (id: string) => {
         setWishlistItems((prev) => prev.filter((item) => item.id !== id));

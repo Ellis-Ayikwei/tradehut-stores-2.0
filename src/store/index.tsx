@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import productsSlice from './productSlice';
 import themeConfigSlice from './themeConfigSlice';
 import cartSlice from './cartSlice';
+import wishListSlice from './wishListSlice';
 
 const rootReducer = combineReducers({
     themeConfig: themeConfigSlice,
     products: productsSlice,
     cart: cartSlice,
+    wishlist: wishListSlice
 });
 
 export const store = configureStore({

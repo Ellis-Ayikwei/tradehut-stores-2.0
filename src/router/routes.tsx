@@ -6,7 +6,7 @@ import MainLayout from '../components/Layouts/MainLayout';
 import ForgotPassword from '../pages/auth/forgot-password';
 import Login from '../pages/auth/login';
 import Register from '../pages/auth/register';
-import Cart from '../pages/cart';
+import Cart from '../pages/cart/cart';
 import Deals from '../pages/deals';
 import Faq from '../pages/faq';
 import Home from '../pages/Index';
@@ -14,9 +14,9 @@ import ProductDetail from '../pages/products/[id]';
 import AllProducts from '../pages/products/all-products';
 import UserDashboard from '../pages/profile/settings';
 import Returns from '../pages/returns';
-import SellerDashboard from '../pages/sell';
+import SellerDashboard from '../pages/seller/sell';
 import ShippingInfo from '../pages/shipping-info';
-import Wishlist from '../pages/wishlist';
+import Wishlist from '../pages/wishlist/wishlist';
 
 const Index = lazy(() => import('../pages/Index'));
 

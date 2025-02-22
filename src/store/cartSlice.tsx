@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AxiosResponse } from 'axios';
 import axiosInstance from '../helper/axiosInstance';
+import { Cart } from '../types';
 
 // Define the CartItem interface as needed
 export interface CartItem {
@@ -10,12 +12,19 @@ export interface CartItem {
 
 // Define the state interface for the cart slice
 interface CartState {
-    cart: Cart[];
+    cart: Cart;
     isUpdating: boolean;
 }
 
 const initialState: CartState = {
-    cart: [],
+    cart: {
+        id: '',
+        created_at: '',
+        updated_at: '',
+        user: '',
+        items: [],
+        item_count: 0,
+    },
     isUpdating: false,
 };
 
@@ -23,7 +32,7 @@ export const getCart = createAsyncThunk('cart/getCart', async (_, { rejectWithVa
     try {
         const response = await axiosInstance.get(`users/1c110288-2c26-4837-b4b7-bbd4a29b3832/my_cart/`);
         console.log('response from the thunk', response.data);
-        return response.data as Cart[];
+        return response.data as Cart;
     } catch (error) {
         console.error('Failed to get cart:', error);
         return rejectWithValue(error);
@@ -31,25 +40,53 @@ export const getCart = createAsyncThunk('cart/getCart', async (_, { rejectWithVa
 });
 
 // Async thunk to add an item to the cart
-export const addToCart = createAsyncThunk('cart/addToCart', async (payload: { productId: string; quantity: number; variantId?: string }, { rejectWithValue }) => {
+export const addToCart = createAsyncThunk(
+    'cart/addToCart',
+    async (
+        payload: {
+            cart_id: string;
+            product_id: string;
+            quantity: number;
+            product_variant_id?: string;
+        },
+        { rejectWithValue, dispatch }
+    ) => {
+        try {
+            const response = await axiosInstance.post(`cart-items/`, payload);
+            if (response.status === 201) {
+                dispatch(getCart());
+            }
+
+            return response;
+        } catch (error: any) {
+            console.error('Failed to add to cart:', error);
+            // Extract only serializable data from the error
+            return rejectWithValue({
+                message: error.message,
+                code: error.code,
+                response: error.response ? error.response.data : null,
+            });
+        }
+    }
+);
+
+// Async thunk to remove an item from the cart
+export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (payload: { cartItemId: string }, { rejectWithValue, dispatch }) => {
     try {
-        const response = await axiosInstance.post('carts/e4be73ec-f98c-48cd-b8a1-7f618df8c093/', payload);
-        // Assuming the response contains the updated cart as response.data.cart
-        return response.data.cart as Cart[];
+        const response = await axiosInstance.delete(`/cart-items/${payload.cartItemId}/`);
+        return response;
     } catch (error) {
-        console.error('Failed to add to cart:', error);
+        console.error('Failed to remove from cart:', error);
         return rejectWithValue(error);
     }
 });
 
-// Async thunk to remove an item from the cart
-export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (payload: { productId: string; variantId?: string }, { rejectWithValue }) => {
+export const updateCart = createAsyncThunk('cart/updateCart', async (payload: { cartItemId: string; quantity: number }, { rejectWithValue, dispatch }) => {
     try {
-        const response = await axiosInstance.post('/api/cart/remove', payload);
-        // Assuming the response contains the updated cart as response.data.cart
-        return response.data.cart as CartItem[];
+        const response = await axiosInstance.put(`/cart-items/${payload.cartItemId}/update_item_quantity/`, payload);
+        return response;
     } catch (error) {
-        console.error('Failed to remove from cart:', error);
+        console.error('Failed to update cart:', error);
         return rejectWithValue(error);
     }
 });
@@ -65,7 +102,7 @@ const cartSlice = createSlice({
         builder.addCase(getCart.pending, (state) => {
             state.isUpdating = true;
         });
-        builder.addCase(getCart.fulfilled, (state, action: PayloadAction<Cart[]>) => {
+        builder.addCase(getCart.fulfilled, (state, action: PayloadAction<Cart>) => {
             state.cart = action.payload;
             state.isUpdating = false;
         });
@@ -75,8 +112,8 @@ const cartSlice = createSlice({
         builder.addCase(addToCart.pending, (state) => {
             state.isUpdating = true;
         });
-        builder.addCase(addToCart.fulfilled, (state, action: PayloadAction<Cart[]>) => {
-            state.cart = action.payload;
+        builder.addCase(addToCart.fulfilled, (state, action: PayloadAction<AxiosResponse>) => {
+            state.cart = action.payload.data;
             state.isUpdating = false;
         });
         builder.addCase(addToCart.rejected, (state) => {

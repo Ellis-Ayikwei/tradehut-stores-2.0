@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import axiosInstance from '../helper/axiosInstance';
 
 export function useCheckout() {
   const [checkoutStatus, setCheckoutStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
@@ -7,7 +8,7 @@ export function useCheckout() {
   const initializeCheckout = useCallback(async (cartId: string) => {
     setCheckoutStatus('processing');
     try {
-      const response = await axios.post('/api/checkout/initialize', { cartId });
+      const response = await axiosInstance.post('/api/checkout/initialize', { cartId });
       setPaymentIntent(response.data.paymentIntent);
       setCheckoutStatus('idle');
       return response.data;
@@ -20,7 +21,7 @@ export function useCheckout() {
   const processPayment = useCallback(async (paymentMethod: string) => {
     setCheckoutStatus('processing');
     try {
-      const response = await axios.post('/api/checkout/process', {
+      const response = await axiosInstance.post('/api/checkout/process', {
         paymentIntent: paymentIntent.id,
         paymentMethod
       });

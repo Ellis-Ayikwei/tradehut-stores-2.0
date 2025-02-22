@@ -1,4 +1,6 @@
 import { useCallback, useState } from 'react';
+import axiosInstance from '../helper/axiosInstance';
+import { CartItem } from '../store/cartSlice';
 
 export function useCart() {
     const [cart, setCart] = useState<CartItem[]>([]);
@@ -8,7 +10,7 @@ export function useCart() {
         setIsUpdating(true);
         try {
             // API call to add to cart
-            const response = await axios.post('/api/cart/add', {
+            const response = await axiosInstance.post('/api/cart/add', {
                 productId,
                 quantity,
                 variantId,
@@ -26,7 +28,7 @@ export function useCart() {
     const removeFromCart = useCallback(async (productId: string, variantId?: string) => {
         setIsUpdating(true);
         try {
-            const response = await axios.post('/api/cart/remove', {
+            const response = await axiosInstance.post('/api/cart/remove', {
                 productId,
                 variantId,
             });

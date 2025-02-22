@@ -6,6 +6,7 @@ import ProductList from '../../components/Products/ProductList';
 import fetcher from '../../helper/fetcher';
 import { AppDispatch } from '../../store';
 import { fetchProducts } from '../../store/productSlice';
+import { Product } from '../../types';
 
 interface SubCategory {
     category: string;
@@ -108,7 +109,7 @@ export default function AllProducts() {
     return (
         <div className="lg:col-span-3">
             <div className="flex gap-8 pt-10">
-                <aside className="hidden md:block w-2/5 sticky top-4 h-fit h-screen overflow-y-scroll py-16">
+                <aside className="hidden md:block max-w-[300px] sticky top-4 h-fit h-screen overflow-y-scroll py-16">
                     <Sidebar
                         subCategories={subCategoryList}
                         categories={categoryList}

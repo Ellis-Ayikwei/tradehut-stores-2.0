@@ -1,18 +1,20 @@
 'use client';
 
 import { faMoon, faSun } from '@fortawesome/free-regular-svg-icons';
-import { faHeart, faSearch, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from '@headlessui/react';
 import { motion } from 'framer-motion';
+import { Heart, ShoppingCart, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { getCart } from '../../store/cartSlice';
-import { AppDispatch } from '../../store/index';
+import { AppDispatch, IRootState } from '../../store/index';
 import CurrencySelector from '../common/CurrencySelector';
 import OrderForMeModal from '../common/OrderForMeModal';
+import { getWishlist } from '../../store/wishListSlice';
 
 export default function Navbar() {
     const dispatch = useDispatch<AppDispatch>();
@@ -21,18 +23,27 @@ export default function Navbar() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isOrderForMeOpen, setIsOrderForMeOpen] = useState(false);
     const [cartCount, setCartCount] = useState(0);
+    const [wishlistCount, setWishlistCount] = useState(0);
 
-    const cart = useSelector((state: any) => state.cart.cart);
+    const { cart, isUpdating: cartLoading } = useSelector((state: IRootState) => state.cart);
+    const { wishlist, isUpdating: wishlistLoading } = useSelector((state: IRootState) => state.wishlist);
 
     useEffect(() => {
         dispatch(getCart());
+        dispatch(getWishlist());
     }, [dispatch]);
 
     useEffect(() => {
-        setCartCount(cart.item_count);
-    }, [cart]);
+        if (cart && !cartLoading) {
+            setCartCount(cart?.item_count);
+        }
+        if (wishlist && !wishlistLoading) {
+            setWishlistCount(wishlist?.item_count);
+        }
+    }, [cart, wishlistCount]);
+
     return (
-        <nav className="fixed top-0 left-0 right-0  transition-all duration-300 bg-white dark:bg-gray-800 shadow-md transition-colors">
+        <nav className="fixed top-0 left-0 right-0 z-10 transition-all duration-300 bg-white dark:bg-gray-800 shadow-md transition-colors">
             <div className="max-w-screen-xl mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
@@ -65,16 +76,18 @@ export default function Navbar() {
                         <button onClick={toggleTheme} className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a]">
                             <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} className="h-5 w-5" />
                         </button>
-                        <Link to="/wishlist" className="hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#dc711a]">
-                            <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />
+
+                        <Link to="/wishlist" className=" hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#655b53] relative">
+                            <Heart />
+                            <span className="absolute -top-2 -right-2 bg-[#dc711a] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{wishlistCount}</span>
                         </Link>
+
                         <Link to="/cart" className=" hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#655b53] relative">
-                            <FontAwesomeIcon icon={faShoppingCart} className="h-5 w-5" />
-                            <span className="absolute -top-2 -right-2 bg-[#dc711a] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{cartCount}</span>
+                            <ShoppingCart /> <span className="absolute -top-2 -right-2 bg-[#dc711a] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{cartCount}</span>
                         </Link>
                         <Menu as="div" className="relative hidden lg:block">
                             <Menu.Button className="flex items-center text-gray-700 dark:text-gray-200 hover:text-[#dc711a] dark:hover:text-[#dc711a]">
-                                <FontAwesomeIcon icon={faUser} className="w-5 h-5" />
+                                <User />
                             </Menu.Button>
                             <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 <div className="py-1">

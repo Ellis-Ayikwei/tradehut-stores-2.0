@@ -2,8 +2,12 @@
 
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { AppDispatch } from '../../store';
+import { addToWishlist } from '../../store/wishListSlice';
 import ProductListPriceDisplay from './productListPrice';
+import showMessage from '../../helper/showMessage';
 
 interface ProductCardProps {
     readonly id: string;
@@ -22,6 +26,21 @@ interface ProductCardProps {
 export default function ProductCard({ id, name, price, image, description, category, brand, rating, stock, condition, discountPercentage }: ProductCardProps) {
     const stockStatus = stock < 5 ? 'Low Stock' : stock < 10 ? 'Limited Stock' : 'In Stock';
     const stockColor = stock < 5 ? 'bg-red-500' : stock < 10 ? 'bg-amber-500' : 'bg-green-500';
+
+    const dispatch = useDispatch<AppDispatch>();
+
+    const handleAddToWishlist = () => {
+        dispatch(addToWishlist({ wishlist_id: '1', product_id: id }))
+        .unwrap()
+        .then((response) => {
+            if(response.status === 201){
+                showMessage('Product added to wishlist successfully', 'success');
+            }
+        }).catch((error) => {
+            showMessage('Error adding product to wishlist', 'error');
+            console.error('Error adding product to wishlist:', error);
+        });
+    };
 
     return (
         <div className="group relative flex flex-row rounded-lg border bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:flex-col">
