@@ -65,7 +65,7 @@ export const products = [
         id: '4',
         name: 'Samsung Galaxy S23 Ultra',
         price: 1199,
-        image: 'https://images.unsplash.com/photo-1678911820864-e5c67e784c22',
+        image: 'https://images.unsplash.com/photo-1618478594486-c65b899c4936?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         category: 'Phones',
         brand: 'Samsung',
         rating: 4.8,

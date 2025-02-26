@@ -53,7 +53,7 @@ export const addToCart = createAsyncThunk(
     ) => {
         try {
             const response = await axiosInstance.post(`cart-items/`, payload);
-            if (response.status === 201) {
+            if (response.status === 201 || response.status === 200) {
                 dispatch(getCart());
             }
 

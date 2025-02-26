@@ -1,9 +1,7 @@
-
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 import axiosInstance from '../helper/axiosInstance';
 import { Wishlist } from '../types';
-
 
 // Define the WishlistItem interface as needed
 export interface WishlistItem {
@@ -30,19 +28,16 @@ const initialState: WishlistState = {
     isUpdating: false,
 };
 
-export const getWishlist = createAsyncThunk(
-    'wishlist/getWishlist',
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await axiosInstance.get(`users/1c110288-2c26-4837-b4b7-bbd4a29b3832/my_wishlist/`);
-            console.log('Wishlist fetched:', response.data);
-            return response.data as Wishlist;
-        } catch (error) {
-            console.error('Failed to get wishlist:', error);
-            return rejectWithValue(error);
-        }
+export const getWishlist = createAsyncThunk('wishlist/getWishlist', async (_, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.get(`users/1c110288-2c26-4837-b4b7-bbd4a29b3832/my_wishlist/`);
+        console.log('Wishlist fetched:', response.data);
+        return response.data as Wishlist;
+    } catch (error) {
+        console.error('Failed to get wishlist:', error);
+        return rejectWithValue(error);
     }
-);
+});
 
 export const addToWishlist = createAsyncThunk(
     'wishlist/addToWishlist',
@@ -70,20 +65,17 @@ export const addToWishlist = createAsyncThunk(
     }
 );
 
-export const removeFromWishlist = createAsyncThunk(
-    'wishlist/removeFromWishlist',
-    async (payload: { wishlistItemId: string }, { rejectWithValue, dispatch }) => {
-        try {
-            const response = await axiosInstance.delete(`/wishlist-items/${payload.wishlistItemId}/`);
-            // Optionally, refresh the wishlist after removal
-            dispatch(getWishlist());
-            return response;
-        } catch (error) {
-            console.error('Failed to remove from wishlist:', error);
-            return rejectWithValue(error);
-        }
+export const removeFromWishlist = createAsyncThunk('wishlist/removeFromWishlist', async (payload: { wishlistItemId: string }, { rejectWithValue, dispatch }) => {
+    try {
+        const response = await axiosInstance.delete(`/wishlist-items/${payload.wishlistItemId}/`);
+        // Optionally, refresh the wishlist after removal
+        dispatch(getWishlist());
+        return response;
+    } catch (error) {
+        console.error('Failed to remove from wishlist:', error);
+        return rejectWithValue(error);
     }
-);
+});
 
 const wishlistSlice = createSlice({
     name: 'wishlist',

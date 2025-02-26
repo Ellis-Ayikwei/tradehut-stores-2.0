@@ -4,6 +4,7 @@ import { faBars, faBox, faFilter, faHeart, faHome, faShoppingCart, faTag, faTime
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import CurrencySelector from '../common/CurrencySelector';
 import Navbar from '../Navigation/Navbar';
 import Sidebar from '../Navigation/Sidebar';
 import Footer from './Footer';
@@ -91,6 +92,8 @@ export default function MainLayout() {
                                     {isActive(item.path) && <span className="ml-auto">•</span>}
                                 </Link>
                             ))}
+
+                            <CurrencySelector />
                         </nav>
                     </div>
                     <div className="mt-auto p-6 border-t dark:border-gray-700">

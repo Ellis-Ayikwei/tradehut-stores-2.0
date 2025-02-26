@@ -21,6 +21,7 @@ export interface Product {
     requires_installation: boolean;
     meta_title: string;
     meta_description: string;
+    image: string;
     average_rating: string;
     total_reviews: number;
     discount_price: string;

@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import productsSlice from './productSlice';
 import themeConfigSlice from './themeConfigSlice';
 import cartSlice from './cartSlice';
@@ -13,6 +13,12 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredPaths: ['wishlist.addToWishlist.payload.headers'],
+        },
+      }),
 });
 
 export type IRootState = ReturnType<typeof rootReducer>;

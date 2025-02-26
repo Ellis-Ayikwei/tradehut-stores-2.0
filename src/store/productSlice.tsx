@@ -44,9 +44,16 @@ const initialProductDetailState: ProductDetail = {
 // Define the initial state type
 interface ProductState {
     allProducts: object[];
-    productDetail: ProductDetail;
     featuredProducts: object[];
     popularProducts: object[];
+    newArrivals: object[];
+    discountedProducts: object[];
+    trendingProducts: object[];
+    bestSellers: object[];
+    recommendedProducts: object[];
+    relatedProducts: object[];
+    productDetail: ProductDetail;
+    searchResults: object[];
     isUpdating: boolean;
     error: string | null;
 }
@@ -56,10 +63,53 @@ const initialState: ProductState = {
     allProducts: [],
     featuredProducts: [],
     popularProducts: [],
+    newArrivals: [],
+    discountedProducts: [],
+    trendingProducts: [],
+    bestSellers: [],
+    recommendedProducts: [],
+    relatedProducts: [],
     productDetail: initialProductDetailState,
+    searchResults: [],
     isUpdating: false,
     error: null,
 };
+
+// Fetch new arrivals products
+export const fetchNewArrivals = createAsyncThunk('products/fetchNewArrivals', async () => {
+    const response = await axiosInstance.get('/products/new_arrivals/');
+    return response.data;
+});
+
+// Fetch discounted products
+export const fetchDiscountedProducts = createAsyncThunk('products/fetchDiscounted', async () => {
+    const response = await axiosInstance.get('/products/discounted/');
+    return response.data;
+});
+
+// Fetch trending products
+export const fetchTrendingProducts = createAsyncThunk('products/fetchTrending', async () => {
+    const response = await axiosInstance.get('/products/trending/');
+    return response.data;
+});
+
+// Fetch best sellers
+export const fetchBestSellers = createAsyncThunk('products/fetchBestSellers', async () => {
+    const response = await axiosInstance.get('/products/best_sellers/');
+    return response.data;
+});
+
+// Fetch recommended products
+export const fetchRecommendedProducts = createAsyncThunk('products/fetchRecommended', async (product_id: string) => {
+    const response = await axiosInstance.get(`/products/${product_id}/recommended/`);
+    return response.data;
+});
+
+// Fetch related products
+export const fetchRelatedProducts = createAsyncThunk('products/fetchRelated', async (product_id: string) => {
+    const response = await axiosInstance.get(`/products/${product_id}/related/`);
+    return response.data;
+});
 
 // Fetch all products
 export const fetchProducts = createAsyncThunk('products/fetchAll', async () => {
@@ -77,13 +127,20 @@ export const fetchAProduct = createAsyncThunk('products/fetchOne', async (produc
 
 // Fetch featured products
 export const fetchFeaturedProducts = createAsyncThunk('products/featured', async () => {
-    const response = await axiosInstance.get('/products/featured');
+    console.log('featching featured products');
+    const response = await axiosInstance.get('/products/featured/');
+    console.log('featured products', response.data);
     return response.data;
 });
 
 // Fetch popular products
 export const fetchPopularProducts = createAsyncThunk('products/popular', async () => {
-    const response = await axiosInstance.get('/products/popular');
+    const response = await axiosInstance.get('/products/popular/');
+    return response.data;
+});
+// Fetch popular products
+export const fetchTopRatedProducts = createAsyncThunk('products/toprated', async () => {
+    const response = await axiosInstance.get('/products/top_rated/');
     return response.data;
 });
 

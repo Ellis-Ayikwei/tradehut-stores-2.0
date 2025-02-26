@@ -99,7 +99,7 @@ const ProductVariantSelector = ({ productDetail, onConfigChange }: ProductVarian
                                     </div>
                                     <div className="mt-1">
                                         <p className="text-lg font-semibold text-gray-900">
-                                            <ProductListPriceDisplay price={variant.price} discountPercent={productDetail.discount_percentage} final_price={productDetail.final_price} />
+                                            <ProductListPriceDisplay price={variant.price} discountPercent={productDetail.discount_percentage} final_price={variant.final_price} />
                                         </p>
                                         <p className={`text-sm ${isOutOfStock ? 'text-red-500' : 'text-green-600'}`}>{isOutOfStock ? 'Currently unavailable' : 'In Stock'}</p>
                                     </div>

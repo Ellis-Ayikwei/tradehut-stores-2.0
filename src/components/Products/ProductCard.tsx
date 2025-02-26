@@ -1,13 +1,14 @@
 'use client';
 
-import { faHeart } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useDispatch } from 'react-redux';
+import { HeartIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { AppDispatch } from '../../store';
-import { addToWishlist } from '../../store/wishListSlice';
-import ProductListPriceDisplay from './productListPrice';
 import showMessage from '../../helper/showMessage';
+import { AppDispatch, IRootState } from '../../store';
+import { addToWishlist, removeFromWishlist } from '../../store/wishListSlice';
+import { WishListItem } from '../../types';
+import ProductListPriceDisplay from './productListPrice';
 
 interface ProductCardProps {
     readonly id: string;
@@ -26,24 +27,48 @@ interface ProductCardProps {
 export default function ProductCard({ id, name, price, image, description, category, brand, rating, stock, condition, discountPercentage }: ProductCardProps) {
     const stockStatus = stock < 5 ? 'Low Stock' : stock < 10 ? 'Limited Stock' : 'In Stock';
     const stockColor = stock < 5 ? 'bg-red-500' : stock < 10 ? 'bg-amber-500' : 'bg-green-500';
+    const [wishlisted, setWishlisted] = useState<boolean>();
 
     const dispatch = useDispatch<AppDispatch>();
+    const { wishlist, isUpdating } = useSelector((state: IRootState) => state.wishlist);
+
+    useEffect(() => {
+        setWishlisted(Array.isArray(wishlist.items) && !!wishlist.items.find((item: WishListItem) => item.product_id === id));
+    }, [wishlist, id]);
 
     const handleAddToWishlist = () => {
-        dispatch(addToWishlist({ wishlist_id: '1', product_id: id }))
-        .unwrap()
-        .then((response) => {
-            if(response.status === 201){
-                showMessage('Product added to wishlist successfully', 'success');
-            }
-        }).catch((error) => {
-            showMessage('Error adding product to wishlist', 'error');
-            console.error('Error adding product to wishlist:', error);
-        });
+        dispatch(addToWishlist({ wishlist_id: '08143a75-e9f2-4044-8fc2-b4ff3abb6e44', product_id: id }))
+            .unwrap()
+            .then((response) => {
+                if (response.status === 201) {
+                    showMessage('Product added to wishlist successfully', 'success');
+                }
+                if (response.status === 200) {
+                    showMessage('Product removed from wishlist successfully', 'success');
+                }
+            })
+            .catch((error) => {
+                showMessage('Error adding product to wishlist', 'error');
+                console.error('Error adding product to wishlist:', error);
+            });
+    };
+
+    const handleRemoveFromWishlist = () => {
+        dispatch(removeFromWishlist({ wishlist_id: '08143a75-e9f2-4044-8fc2-b4ff3abb6e44', product_id: id }))
+            .unwrap()
+            .then((response) => {
+                if (response.status === 201) {
+                    showMessage('Product added to wishlist successfully', 'success');
+                }
+            })
+            .catch((error) => {
+                showMessage('Error adding product to wishlist', 'error');
+                console.error('Error adding product to wishlist:', error);
+            });
     };
 
     return (
-        <div className="group relative flex flex-row rounded-lg border bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:flex-col">
+        <div className="group relative flex flex-row justify-between rounded-lg border bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:flex-col">
             {/* Image Container */}
             <div className="w-2/5 shrink-2 sm:w-full">
                 <Link to={`/products/${id}`} className="relative block h-full overflow-hidden">
@@ -97,11 +122,14 @@ export default function ProductCard({ id, name, price, image, description, categ
                     <button className="flex-1 rounded-lg bg-primary-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
                         Add to Cart
                     </button>
+
                     <button
                         type="button"
-                        className="inline-flex items-center rounded-lg border p-2 text-gray-500 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        onClick={handleAddToWishlist}
+                        className={`inline-flex items-center rounded-lg border p-2  transition-colors  focus:outline-none focus:ring-2 focus:ring-gray-300 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600  
+                            ${wishlisted ? 'text-red-600 bg-red-100' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                     >
-                        <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />
+                        <HeartIcon className="w-6 h-6" fill={wishlisted ? 'currentColor' : 'none'} />
                     </button>
                 </div>
             </div>

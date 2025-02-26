@@ -5,16 +5,16 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from '@headlessui/react';
 import { motion } from 'framer-motion';
-import { Heart, ShoppingCart, User } from 'lucide-react';
+import { Bell, Heart, ShoppingCart, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { getCart } from '../../store/cartSlice';
 import { AppDispatch, IRootState } from '../../store/index';
+import { getWishlist } from '../../store/wishListSlice';
 import CurrencySelector from '../common/CurrencySelector';
 import OrderForMeModal from '../common/OrderForMeModal';
-import { getWishlist } from '../../store/wishListSlice';
 
 export default function Navbar() {
     const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +40,7 @@ export default function Navbar() {
         if (wishlist && !wishlistLoading) {
             setWishlistCount(wishlist?.item_count);
         }
-    }, [cart, wishlistCount]);
+    }, [cart, wishlist]);
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-10 transition-all duration-300 bg-white dark:bg-gray-800 shadow-md transition-colors">
@@ -69,7 +69,9 @@ export default function Navbar() {
 
                     {/* Right Icons */}
                     <div className="flex items-center space-x-4">
-                        <CurrencySelector />
+                        <div className="relative hidden lg:block">
+                            <CurrencySelector />
+                        </div>
                         <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="text-gray-700 dark:text-white hover:text-[#dc711a] transition-colors">
                             <FontAwesomeIcon icon={faSearch} className="w-5 h-5" />
                         </button>
@@ -77,15 +79,50 @@ export default function Navbar() {
                             <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} className="h-5 w-5" />
                         </button>
 
-                        <Link to="/wishlist" className=" hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#655b53] relative">
+                        <Menu as="div" className="relative lg:block">
+                            <Menu.Button className="flex items-center text-gray-700 dark:text-gray-200 hover:text-[#dc711a] dark:hover:text-[#dc711a]">
+                                <Bell />
+                                <span className="absolute -top-2 -right-2 bg-[#dc711a] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{wishlistCount}</span>
+                            </Menu.Button>
+                            <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="py-1">
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link to="/profile/settings" className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''} block px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
+                                                Settings
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <Link to="/profile/orders" className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''} block px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}>
+                                                Orders
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <button
+                                                onClick={() => {
+                                                    /* Add logout handler */
+                                                }}
+                                                className={`${active ? 'bg-gray-100 dark:bg-gray-700' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200`}
+                                            >
+                                                Sign out
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                </div>
+                            </Menu.Items>
+                        </Menu>
+                        <Link to="/wishlist" className="hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#655b53] relative">
                             <Heart />
                             <span className="absolute -top-2 -right-2 bg-[#dc711a] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{wishlistCount}</span>
                         </Link>
-
-                        <Link to="/cart" className=" hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#655b53] relative">
+                        <Link to="/cart" className="hidden lg:block text-gray-700 dark:text-gray-200 hover:text-[#655b53] relative">
                             <ShoppingCart /> <span className="absolute -top-2 -right-2 bg-[#dc711a] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">{cartCount}</span>
                         </Link>
-                        <Menu as="div" className="relative hidden lg:block">
+                        <Menu as="div" className="relative lg:block">
                             <Menu.Button className="flex items-center text-gray-700 dark:text-gray-200 hover:text-[#dc711a] dark:hover:text-[#dc711a]">
                                 <User />
                             </Menu.Button>
@@ -121,8 +158,6 @@ export default function Navbar() {
                             </Menu.Items>
                         </Menu>
                     </div>
-
-                    {/* Search Bar */}
                 </div>
             </div>
             <motion.div initial={false} animate={{ height: isSearchOpen ? 'auto' : 0, opacity: isSearchOpen ? 1 : 0 }} className="overflow-hidden">
@@ -137,6 +172,34 @@ export default function Navbar() {
                     </div>
                 </div>
             </motion.div>
+
+            {/* Subnav for Categories and Brands */}
+            <div className="bg-gray-100 dark:bg-gray-700 py-2">
+                <div className="max-w-screen-xl mx-auto px-4 overflow-x-auto no-scrollbar">
+                    <div className="flex space-x-4">
+                        {/* Example categories and brands */}
+                        <Link to="/category/phones" className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a] whitespace-nowrap">
+                            Smartphones
+                        </Link>
+                        <Link to="/category/laptops" className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a] whitespace-nowrap">
+                            Laptops
+                        </Link>
+                        <Link to="/category/accessories" className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a] whitespace-nowrap">
+                            Accessories
+                        </Link>
+                        <Link to="/brand/apple" className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a] whitespace-nowrap">
+                            Apple
+                        </Link>
+                        <Link to="/brand/samsung" className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a] whitespace-nowrap">
+                            Samsung
+                        </Link>
+                        <Link to="/brand/sony" className="text-gray-700 dark:text-gray-200 hover:text-[#dc711a] whitespace-nowrap">
+                            Sony
+                        </Link>
+                        {/* Add more categories and brands as needed */}
+                    </div>
+                </div>
+            </div>
 
             <OrderForMeModal isOpen={isOrderForMeOpen} onClose={() => setIsOrderForMeOpen(false)} />
         </nav>

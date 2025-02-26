@@ -121,16 +121,20 @@ export default function Cart() {
                             return (
                                 <div key={item.item_id} className="flex flex-col sm:flex-row gap-4 py-4 border-b">
                                     {/* Product Image */}
-                                    <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-md overflow-hidden shrink-0">
-                                        <img src={item.main_product_image} alt={item.name} className="w-full h-full object-contain" />
-                                    </div>
+                                    <Link to={`/products/${item.product_id}`}>
+                                        <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-md overflow-hidden shrink-0">
+                                            <img src={item.main_product_image.url} alt={item.name} className="w-full h-full object-contain" />
+                                        </div>
+                                    </Link>
 
                                     {/* Product Details */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex flex-col h-full justify-between">
                                             {/* Top Section */}
                                             <div>
-                                                <h3 className="text-lg font-medium text-gray-900 dark:text-white">{item.name}</h3>
+                                                <Link to={`/products/${item.product_id}`}>
+                                                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">{item.name}</h3>
+                                                </Link>
 
                                                 {/* Variant Attributes */}
                                                 <div className="mt-2 flex flex-wrap gap-2">

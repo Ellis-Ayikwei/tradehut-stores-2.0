@@ -11,6 +11,7 @@ import showMessage from '../../helper/showMessage';
 import { AppDispatch, IRootState } from '../../store';
 import { addToCart } from '../../store/cartSlice';
 import { fetchAProduct } from '../../store/productSlice';
+import { addToWishlist } from '../../store/wishListSlice';
 import { ProductVariant } from '../../types';
 import AddReview from './addNewReview';
 import ProductVariantSelector from './productVariant';
@@ -171,7 +172,7 @@ export default function ComprehensiveProductDetail() {
     const [quantity, setQuantity] = useState(1);
     const [selectedSpec, setSelectedSpec] = useState('128GB');
     const [selectedImage, setSelectedImage] = useState(0);
-    const [wishlisted, setWishlisted] = useState(false);
+
     const [selectedVariantConfig, setSelectedVariantConfig] = useState<{ variant: ProductVariant; attributes: Record<string, string>; isComplete: boolean } | null>(null);
 
     const [error, setError] = useState<string | null>(null);
@@ -180,6 +181,14 @@ export default function ComprehensiveProductDetail() {
     const handleVariantSelect = (config: { variant: ProductVariant; attributes: Record<string, string>; isComplete: boolean }) => {
         setSelectedVariantConfig(config);
     };
+
+    const [wishlisted, setWishlisted] = useState<boolean>();
+
+    const { wishlist, isUpdating } = useSelector((state: IRootState) => state.wishlist);
+
+    useEffect(() => {
+        setWishlisted(Array.isArray(wishlist.items) && !!wishlist.items.find((item: WishListItem) => item.product_id === id));
+    }, [wishlist, id]);
 
     console.log(selectedVariantConfig === null);
     console.log('the selected varaiant', selectedVariantConfig);
@@ -254,6 +263,23 @@ export default function ComprehensiveProductDetail() {
         navigate(`/checkout?productId=${productDetail.id}&variantId=${selectedVariantConfig.variant.id}&quantity=${quantity}`);
     }
 
+    const handleAddToWishlist = () => {
+        dispatch(addToWishlist({ wishlist_id: '08143a75-e9f2-4044-8fc2-b4ff3abb6e44', product_id: productDetail.id }))
+            .unwrap()
+            .then((response) => {
+                if (response.status === 201) {
+                    showMessage('Product added to wishlist successfully', 'success');
+                }
+                if (response.status === 200) {
+                    showMessage('Product removed from wishlist successfully', 'success');
+                }
+            })
+            .catch((error) => {
+                showMessage('Error adding product to wishlist', 'error');
+                console.error('Error adding product to wishlist:', error);
+            });
+    };
+
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen py-6 lg:py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
@@ -303,7 +329,7 @@ export default function ComprehensiveProductDetail() {
                                         <p className="text-gray-600 dark:text-gray-300">{product.description}</p>
                                     </div>
                                     <button
-                                        onClick={handleToggleWishlist}
+                                        onClick={handleAddToWishlist}
                                         className={`p-2 rounded-full ${wishlisted ? 'text-red-600 bg-red-100' : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                                     >
                                         <HeartIcon className="w-6 h-6" fill={wishlisted ? 'currentColor' : 'none'} />
