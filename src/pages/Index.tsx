@@ -25,7 +25,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
@@ -33,11 +33,13 @@ import SelectedProductsSection from '../components/common/selectedProductsForIIn
 import ScrollToTop from '../components/ScrollToTop';
 import { products } from '../data/products';
 import { AppDispatch } from '../store';
-import { fetchBestSellers, fetchDiscountedProducts, fetchFeaturedProducts, fetchNewArrivals, fetchTopRatedProducts, fetchTrendingProducts } from '../store/productSlice';
+import { fetchBestSellers, fetchDiscountedProducts, fetchFeaturedProducts, fetchNewArrivals, fetchPOM, fetchTopRatedProducts, fetchTrendingProducts } from '../store/productSlice';
 
 // Lazy load components
 const PromoBanner = lazy(() => import('../components/Banner/PromoBanner'));
 const Hero = lazy(() => import('../components/Layouts/Hero'));
+
+// = lazy(() => import('../components/common/selectedProductsForIIndex'));
 
 const categories = [
     {
@@ -110,7 +112,7 @@ const categories = [
         id: 10,
         title: 'Accessories & Connectivity',
         icon: faPlug,
-        image: 'https://images.unsplash.com/photo-1600324405356-3f40e175e756?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070',
+        image: 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
         desc: 'Cables, adapters & connectors',
     },
     {
@@ -235,6 +237,8 @@ export default function Home() {
     const [sampleProducts] = useState(products);
     const dispatch = useDispatch<AppDispatch>();
 
+    const { featuredProducts, newArrivals, discountedProducts, trendingProducts, bestSellers, topRatedProducts, productOfTheMonth } = useSelector((state: any) => state.products);
+
     useEffect(() => {
         console.log('index r');
         dispatch(fetchFeaturedProducts());
@@ -243,12 +247,13 @@ export default function Home() {
         dispatch(fetchTrendingProducts());
         dispatch(fetchBestSellers());
         dispatch(fetchTopRatedProducts());
+        dispatch(fetchPOM());
     }, [dispatch]);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <Suspense fallback={<div>Loading...</div>}>
-                <Hero />
+                <Hero featuredProducts={featuredProducts} ProductOftheMonth={productOfTheMonth} />
             </Suspense>
 
             <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -258,7 +263,12 @@ export default function Home() {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
                         {categories.map((category) => (
                             <motion.div key={category.id} whileHover={{ y: -5, scale: 1.05 }} className="relative group overflow-hidden rounded-xl shadow-lg transition-transform duration-300">
-                                <img src={category.image} alt={category.title} className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
+                                <img
+                                    src={`/assets/images/categories/${category.title}.avif` ? `/assets/images/categories/${category.title}.avif` : `/assets/images/categories/${category.title}.jpeg`}
+                                    alt={category.title}
+                                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                                    loading="lazy"
+                                />
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                                     <div className="text-center text-white">
                                         <FontAwesomeIcon icon={category.icon} className="h-8 w-8 mb-3" />
@@ -330,7 +340,7 @@ export default function Home() {
                         {sampleProducts.slice(0, 6).map((product) => (
                             <div key={product.id} className="p-4">
                                 <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                                    <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" />
+                                    <img src={product.image} alt={product.name} className="w-full h-48 object-cover rounded-t-xl" loading="lazy" />
                                     <div className="p-4">
                                         <h3 className="text-lg font-bold text-gray-900 dark:text-white">{product.name}</h3>
                                         <p className="text-primary-600 font-bold">${product.price}</p>

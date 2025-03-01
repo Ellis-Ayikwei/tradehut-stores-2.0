@@ -1,12 +1,12 @@
 'use client';
 
 import { HeartIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import showMessage from '../../helper/showMessage';
 import { AppDispatch, IRootState } from '../../store';
-import { addToWishlist, removeFromWishlist } from '../../store/wishListSlice';
+import { addToWishlist } from '../../store/wishListSlice';
 import { WishListItem } from '../../types';
 import ProductListPriceDisplay from './productListPrice';
 
@@ -22,9 +22,10 @@ interface ProductCardProps {
     readonly condition: string;
     readonly discountPercentage?: number;
     readonly description?: string;
+    readonly children?: React.ReactNode;
 }
 
-export default function ProductCard({ id, name, price, image, description, category, brand, rating, stock, condition, discountPercentage }: ProductCardProps) {
+const ProductCardComponent = ({ id, name, price, image, description, category, brand, rating, stock, condition, discountPercentage, children }: ProductCardProps) => {
     const stockStatus = stock < 5 ? 'Low Stock' : stock < 10 ? 'Limited Stock' : 'In Stock';
     const stockColor = stock < 5 ? 'bg-red-500' : stock < 10 ? 'bg-amber-500' : 'bg-green-500';
     const [wishlisted, setWishlisted] = useState<boolean>();
@@ -53,27 +54,13 @@ export default function ProductCard({ id, name, price, image, description, categ
             });
     };
 
-    const handleRemoveFromWishlist = () => {
-        dispatch(removeFromWishlist({ wishlist_id: '08143a75-e9f2-4044-8fc2-b4ff3abb6e44', product_id: id }))
-            .unwrap()
-            .then((response) => {
-                if (response.status === 201) {
-                    showMessage('Product added to wishlist successfully', 'success');
-                }
-            })
-            .catch((error) => {
-                showMessage('Error adding product to wishlist', 'error');
-                console.error('Error adding product to wishlist:', error);
-            });
-    };
-
     return (
         <div className="group relative flex flex-row justify-between rounded-lg border bg-white shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800 sm:flex-col">
             {/* Image Container */}
             <div className="w-2/5 shrink-2 sm:w-full">
                 <Link to={`/products/${id}`} className="relative block h-full overflow-hidden">
                     <div className="aspect-square w-full">
-                        <img src={image} alt={name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                        <img src={image} alt={name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
                     </div>
 
                     {/* Stock Badge */}
@@ -132,7 +119,12 @@ export default function ProductCard({ id, name, price, image, description, categ
                         <HeartIcon className="w-6 h-6" fill={wishlisted ? 'currentColor' : 'none'} />
                     </button>
                 </div>
+
+                {children}
             </div>
         </div>
     );
-}
+};
+
+const ProductCard = memo(ProductCardComponent);
+export default ProductCard;

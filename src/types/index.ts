@@ -1,40 +1,40 @@
 export interface Product {
-    id: string;
-    tags: string[];
-    main_product_image: {
+    id?: string;
+    tags?: string[];
+    main_product_image?: {
         url: string;
     };
-    created_at: string;
-    updated_at: string;
-    status: string;
-    name: string;
-    keywords: string;
-    description: string;
-    slug: string;
-    price: string;
-    min_amount: number;
-    thin: string;
-    inventory_level: number;
-    available: boolean;
-    condition: string;
-    is_spare_part: boolean;
-    requires_installation: boolean;
-    meta_title: string;
-    meta_description: string;
-    image: string;
-    average_rating: string;
-    total_reviews: number;
-    discount_price: string;
-    discount_percentage: number;
-    category: string;
-    sub_category: string;
-    brand: string;
-    seller: string;
-    variants: {
-        id: string;
-        name: string;
+    created_at?: string;
+    updated_at?: string;
+    status?: string;
+    name?: string;
+    keywords?: string;
+    description?: string;
+    slug?: string;
+    price?: string;
+    min_amount?: number;
+    thin?: string;
+    inventory_level?: number;
+    available?: boolean;
+    condition?: string;
+    is_spare_part?: boolean;
+    requires_installation?: boolean;
+    meta_title?: string;
+    meta_description?: string;
+    image?: string;
+    average_rating?: string;
+    total_reviews?: number;
+    discount_price?: string;
+    discount_percentage?: number;
+    category?: string;
+    sub_category?: string;
+    brand?: string;
+    seller?: string;
+    variants?: {
+        id?: string;
+        name?: string;
     }[];
-    rating: number;
+    rating?: number;
 }
 
 export interface ProductDetail {

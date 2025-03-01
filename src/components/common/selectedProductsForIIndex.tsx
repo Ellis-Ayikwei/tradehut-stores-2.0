@@ -1,6 +1,7 @@
 import { faArrowRight, faBolt, faFire, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import {Link} from 'react-router-dom'
 import { Product } from '../../types';
 import ProductCard from '../Products/ProductCard';
 
@@ -80,10 +81,10 @@ const SelectedProductsSection = ({ products, sectionTitle, productLimit, variant
                         <div className="absolute bottom-0 left-0 w-24 h-1 bg-gradient-to-r from-primary-200 to-red-600 mt-2"></div>
                     </div>
 
-                    <button className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white transition-all bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700">
+                    <Link to={`/products`} className="group btn relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-medium text-white transition-all bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:from-blue-600 hover:to-purple-700">
                         <span className="relative">View All Products</span>
                         <FontAwesomeIcon icon={faArrowRight} className="ml-3 transform group-hover:translate-x-1 transition-transform duration-300" />
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Dynamic Content Area */}
@@ -98,8 +99,7 @@ const SelectedProductsSection = ({ products, sectionTitle, productLimit, variant
                                         discountPercentage={product.discount_percentage}
                                         image={product.main_product_image?.url || product.image}
                                         stock={product.inventory_level}
-                                        className="relative bg-white dark:bg-gray-800 shadow-2xl hover:shadow-3xl rounded-2xl overflow-hidden"
-                                        badge={index < 3 ? `#${index + 1} Best Seller` : undefined}
+                                        // badge={index < 3 ? `#${index + 1} Best Seller` : undefined}
                                     />
                                 </div>
                             ))}
@@ -117,12 +117,10 @@ const SelectedProductsSection = ({ products, sectionTitle, productLimit, variant
                                 discountPercentage={product.discount_percentage}
                                 image={product.main_product_image?.url || product.image}
                                 stock={product.inventory_level}
-                                className="relative group bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl rounded-2xl overflow-hidden transform transition-all duration-300 hover:-translate-y-2"
-                                imageClassName="group-hover:scale-110 transition-transform duration-300"
-                                quickViewButton
-                                wishlistButton
-                                ratingDisplay
-                                hoverEffects
+                                // quickViewButton
+                                // wishlistButton
+                                // ratingDisplay
+                                // hoverEffects
                             />
                         ))}
                     </div>
@@ -149,7 +147,6 @@ const SelectedProductsSection = ({ products, sectionTitle, productLimit, variant
                                     discountPercentage={product.discount_percentage}
                                     image={product.main_product_image?.url || product.image}
                                     stock={product.inventory_level}
-                                    compactView
                                 />
                             </div>
                         ))}

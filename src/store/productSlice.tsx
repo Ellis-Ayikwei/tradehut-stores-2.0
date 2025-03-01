@@ -54,6 +54,7 @@ interface ProductState {
     relatedProducts: object[];
     productDetail: ProductDetail;
     searchResults: object[];
+    productOfTheMonth: object[];
     isUpdating: boolean;
     error: string | null;
 }
@@ -65,6 +66,7 @@ const initialState: ProductState = {
     popularProducts: [],
     newArrivals: [],
     discountedProducts: [],
+    productOfTheMonth: [],
     trendingProducts: [],
     bestSellers: [],
     recommendedProducts: [],
@@ -78,6 +80,11 @@ const initialState: ProductState = {
 // Fetch new arrivals products
 export const fetchNewArrivals = createAsyncThunk('products/fetchNewArrivals', async () => {
     const response = await axiosInstance.get('/products/new_arrivals/');
+    return response.data;
+});
+
+export const fetchPOM = createAsyncThunk('products/fetchProductOfTheMonth', async () => {
+    const response = await axiosInstance.get('/products/product_of_the_month/');
     return response.data;
 });
 
@@ -186,6 +193,9 @@ const productSlice = createSlice({
             })
             .addCase(searchProducts.fulfilled, (state, action) => {
                 state.allProducts = action.payload;
+            })
+            .addCase(fetchPOM.fulfilled, (state, action) => {
+                state.productOfTheMonth = action.payload;
             });
     },
 });
